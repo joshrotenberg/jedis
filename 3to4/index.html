@@ -1,0 +1,716 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../3to4-zset-list/">
+      
+      
+        <link rel="next" href="../breaking-5/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon-16x16.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>Jedis 4 Breaking Changes - Jedis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#jedis-4-breaking-changes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Jedis" class="md-header__button md-logo" aria-label="Jedis" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jedis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Jedis 4 Breaking Changes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/redis/jedis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Jedis" class="md-nav__button md-logo" aria-label="Jedis" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    Jedis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/redis/jedis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3to4-primitives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3to4 primitives
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3to4-zset-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3to4 zset list
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Jedis 4 Breaking Changes
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../breaking-5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jedis 5 Breaking Changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../failover/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Failover with Jedis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jedis-maven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jedis maven
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redisearch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RediSearch Jedis Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redisjson/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RedisJSON Jedis Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="jedis-4-breaking-changes">Jedis 4 Breaking Changes</h1>
+<ul>
+<li>The <code>BinaryJedis</code> and <code>BinaryJedisCluster</code> classes have been removed.</li>
+</ul>
+<p>The methods from these classes are available in the <code>Jedis</code> and <code>JedisCluster</code> classes
+  respectively.</p>
+<ul>
+<li>The following cases now throws an <code>IllegalStateException</code> instead of a
+<code>JedisDataException</code>.</li>
+<li><code>Cannot use Jedis when in Multi. Please use Transaction or reset Jedis state.</code></li>
+<li>
+<p><code>Cannot use Jedis when in Pipeline. Please use Pipeline or reset Jedis state.</code></p>
+</li>
+<li>
+<p>The Redis transaction methods <code>multi()</code>, <code>exec()</code> and <code>discard()</code> have
+  been removed from <code>Pipeline</code>.</p>
+</li>
+<li>
+<p>The <code>execGetResponse()</code> method has been removed from <code>Transaction</code>.</p>
+</li>
+<li>
+<p>The <code>watch()</code> and <code>unwatch()</code> methods from the <code>Transaction</code> class are unsupported
+within MULTI (i.e., after the <code>multi()</code> method). However, <code>watch()</code> and <code>unwatch
+()</code> can still be used before calling MULTI.</p>
+</li>
+<li>
+<p>The <code>JedisCluster</code> constructors with <code>GenericObjectPoolConfig&lt;Jedis&gt;</code> now accept
+  <code>GenericObjectPoolConfig&lt;Connection&gt;</code>.</p>
+</li>
+<li>
+<p>All <code>JedisCluster</code> constructors now throw a <code>JedisClusterOperationException</code> if
+unable to connect to any of the provided <code>HostAndPort(s)</code>. Previously, the
+connection would go into an unusable state.</p>
+</li>
+<li>
+<p><code>JedisCluster.getClusterNodes()</code> returns <code>Map&lt;String, ConnectionPool&gt;</code> instead of
+  <code>Map&lt;String, JedisPool&gt;</code>.</p>
+</li>
+<li>
+<p><code>JedisCluster.getConnectionFromSlot(int)</code> returns <code>Connection</code> instead of <code>Jedis</code>.</p>
+</li>
+<li>
+<p><code>JedisNoReachableClusterNodeException</code> has been removed.
+<code>JedisClusterOperationException</code>, with a similar message, is thrown instead.</p>
+</li>
+<li>
+<p><code>JedisClusterMaxAttemptsException</code> has been removed.
+<code>JedisClusterOperationException</code>, with a similar message, is thrown instead.</p>
+</li>
+<li>
+<p><code>JedisExhaustedPoolException</code> has been removed. A <code>JedisException</code> with a similar message is thrown
+  instead.</p>
+</li>
+<li>
+<p><a href="../3to4-zset-list/">Many sorted set methods</a> return a Java <code>List</code> instead of a
+<code>Set</code>. <a href="../3to4-zset-list/">See the complete list</a>.</p>
+</li>
+<li>
+<p><a href="../3to4-primitives/">Many methods return primitive values</a>) (<code>long</code>/<code>boolean</code>/<code>double</code> instead of
+<code>Long</code>/<code>Boolean</code>/
+  <code>Double</code>). <a href="../3to4-primitives/">See the complete list</a>.</p>
+</li>
+<li>
+<p><code>scriptExists(byte[])</code> method now returns <code>Boolean</code> instead of <code>Long</code>.</p>
+</li>
+<li>
+<p><code>scriptExists(byte[]...)</code> method now returns <code>List&lt;Boolean&gt;</code> instead of <code>List&lt;Long&gt;</code>.</p>
+</li>
+<li>
+<p>In the <a href="https://redis.io/commands/XADD"><code>xadd</code></a> method with StreamEntryID
+parameter, sending untyped <code>null</code> raises an exception.</p>
+</li>
+</ul>
+<p>Casting the <code>null</code> to StreamEntryID (<code>(StreamEntryID) null</code>) resolves this issue.</p>
+<ul>
+<li>In the <a href="https://redis.io/commands/XRANGE"><code>xrange</code></a> and
+  <a href="https://redis.io/commands/xrevrange"><code>xrevrange</code></a> methods with StreamEntryID parameters, sending
+  untyped <code>null</code>s for both start and end parameters raises an exception.</li>
+</ul>
+<p>Casting the <code>null</code>s to StreamEntryID (<code>(StreamEntryID) null</code>) resolves this issue.</p>
+<ul>
+<li>
+<p>The return type of <code>Jedis.shutdown()</code> is now <code>void</code>. Previously, it would return null.</p>
+</li>
+<li>
+<p>The <code>eval</code> and <code>evalsha</code> methods are now non-blocking. These methods were
+blocking in Jedis 3.x.</p>
+</li>
+<li>
+<p>The <code>HostAndPort.localhost</code> constant has been removed.</p>
+</li>
+<li>
+<p>The following methods have been removed from HostAndPort class:</p>
+</li>
+<li><code>extractParts()</code></li>
+<li><code>parseString()</code></li>
+<li><code>convertHost()</code></li>
+<li><code>setLocalhost()</code></li>
+<li><code>getLocalhost()</code></li>
+<li>
+<p><code>getLocalHostQuietly()</code></p>
+</li>
+<li>
+<p>The following classes have been moved to the <code>redis.clients.jedis.args</code> package.</p>
+</li>
+<li><code>BitOP</code></li>
+<li><code>GeoUnit</code></li>
+<li>
+<p><code>ListPosition</code></p>
+</li>
+<li>
+<p>The following classes have been moved to the <code>redis.clients.jedis.params</code> package.</p>
+</li>
+<li><code>BitPosParams</code></li>
+<li><code>ScanParams</code></li>
+<li><code>SortingParams</code></li>
+<li>
+<p><code>ZParams</code></p>
+</li>
+<li>
+<p>The following classes have been moved to the <code>redis.clients.jedis.resps</code> package.</p>
+</li>
+<li><code>AccessControlLogEntry</code></li>
+<li><code>AccessControlUser</code></li>
+<li><code>GeoRadiusResponse</code></li>
+<li><code>ScanResult</code></li>
+<li><code>Slowlog</code></li>
+<li><code>StreamConsumersInfo</code></li>
+<li><code>StreamEntry</code></li>
+<li><code>StreamGroupInfo</code></li>
+<li><code>StreamInfo</code></li>
+<li><code>StreamPendingEntry</code></li>
+<li><code>StreamPendingSummary</code></li>
+<li>
+<p><code>Tuple</code></p>
+</li>
+<li>
+<p>Jedis and JedisPool constructors with a <code>String</code> parameter, and no <code>int</code>
+parameter, only support a URL or URI string.</p>
+</li>
+<li>Jedis(String)</li>
+<li>JedisPool(String)</li>
+<li>JedisPool(String, SSLSocketFactory, SSLParameters, HostnameVerifier)</li>
+<li>
+<p>JedisPool(GenericObjectPoolConfig<Jedis>, String)</p>
+</li>
+<li>
+<p>The <code>Client</code> and <code>BinaryClient</code> classes have been removed.</p>
+</li>
+<li>
+<p><code>redis.clients.jedis.commands</code> package has been reimplemented, meaning that the
+<code>Commands</code> interfaces have been restructured.</p>
+</li>
+<li>
+<p>The <code>ShardedJedisPool</code>, <code>Sharded</code>, <code>ShardedJedis</code>, <code>BinaryShardedJedis</code>, <code>ShardInfo</code>,
+<code>JedisShardInfo</code> classes have been removed.</p>
+</li>
+<li>
+<p>Introduced <code>JedisSharding</code> class to replace <code>ShardedJedisPool</code>.</p>
+<p>Earlier code without the use of "name" and "weight" (in ShardInfo/JedisShardInfo) are
+transferable to the new class.</p>
+</li>
+<li>
+<p><code>ShardedJedisPipeline</code> class has been removed.</p>
+</li>
+<li>
+<p>Introduced <code>ShardedPipeline</code> class to replace <code>ShardedJedisPipeline</code>.</p>
+</li>
+<li>
+<p>The type of <code>Protocol.CHARSET</code> has been changed to <code>java.nio.charset.Charset</code>.</p>
+</li>
+<li>
+<p><code>Jedis.debug(DebugParams)</code> method has been removed.</p>
+</li>
+<li>
+<p>The <code>DebugParams</code> class has been removed.</p>
+</li>
+<li>
+<p>The <code>Jedis.sync()</code> method has been removed.</p>
+</li>
+<li>
+<p>The <code>Jedis.pubsubNumSub(String...)</code> method now returns <code>Map&lt;String, Long&gt;</code>
+instead of <code>Map&lt;String, String&gt;</code>.</p>
+</li>
+<li>
+<p><code>setDataSource</code> method in Jedis class now has <code>protected</code> access.</p>
+</li>
+<li>
+<p><code>JedisPoolAbstract</code> class has been removed. Use <code>Pool&lt;Jedis&gt;</code>.</p>
+</li>
+<li>
+<p>The <code>Pool.initPool()</code> method has been removed.</p>
+</li>
+<li>
+<p>The <code>Pool.getNumActive()</code> method now returns <code>0</code> (via GenericObjectPool) when the
+pool is closed.</p>
+</li>
+<li>
+<p>The <code>Connection.getRawObjectMultiBulkReply()</code> method has been removed. Use
+  <code>Connection.getUnflushedObjectMultiBulkReply()</code> method.</p>
+</li>
+<li>
+<p>The <code>Queable.getResponse(Builder&lt;T&gt; builder)</code> method has been renamed to
+  <code>Queable.enqueResponse(Builder&lt;T&gt; builder)</code>.</p>
+</li>
+<li>
+<p>All methods in Queable are now <code>final</code>:</p>
+</li>
+<li><code>clean()</code></li>
+<li><code>generateResponse(Object data)</code></li>
+<li><code>enqueResponse(Builder&lt;T&gt; builder)</code></li>
+<li>
+<p><code>getPipelinedResponseLength()</code></p>
+</li>
+<li>
+<p>These BuilderFactory implementations have been removed:</p>
+</li>
+<li><code>OBJECT</code> (use <code>RAW_OBJECT</code>)</li>
+<li><code>BYTE_ARRAY_ZSET</code> (use <code>BINARY_LIST</code> or <code>BINARY_SET</code>)</li>
+<li><code>BYTE_ARRAY_MAP</code> (use <code>BINARY_MAP</code>)</li>
+<li><code>STRING_ZSET</code> (use <code>STRING_LIST</code> or <code>STRING_SET</code>)</li>
+<li><code>EVAL_RESULT</code> (use <code>ENCODED_OBJECT</code>)</li>
+<li>
+<p><code>EVAL_BINARY_RESULT</code> (use <code>RAW_OBJECT</code>)</p>
+</li>
+<li>
+<p>All String variables representing Cluster, Sentinel and PubSub subcommands in Protocol class
+  have been removed.</p>
+</li>
+<li>
+<p><code>ClientKillParams.Type</code> has been removed. Use <code>ClientType</code>.</p>
+</li>
+<li>
+<p><code>ClusterReset</code> has been removed. Use <code>ClusterResetType</code>.</p>
+</li>
+<li>
+<p>The <code>JedisClusterHostAndPortMap</code> interface has been removed. Use the
+<code>HostAndPortMapper</code> interface.</p>
+</li>
+<li>
+<p><code>JedisClusterHashTagUtil</code> class has been renamed to <code>JedisClusterHashTag</code>.</p>
+</li>
+<li>
+<p>The <code>KeyMergeUtil</code> class has been removed.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>

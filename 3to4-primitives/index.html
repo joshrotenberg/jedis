@@ -1,0 +1,717 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="../3to4-zset-list/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon-16x16.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>3to4 primitives - Jedis</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-following-methods-now-return-primitive-values" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Jedis" class="md-header__button md-logo" aria-label="Jedis" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Jedis
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3to4 primitives
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/redis/jedis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Jedis" class="md-nav__button md-logo" aria-label="Jedis" data-md-component="logo">
+      
+  <img src="../assets/images/logo.png" alt="logo">
+
+    </a>
+    Jedis
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/redis/jedis" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    3to4 primitives
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    3to4 primitives
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-following-methods-now-return-primitive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      The following methods now return primitive values:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3to4-zset-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3to4 zset list
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3to4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jedis 4 Breaking Changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../breaking-5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jedis 5 Breaking Changes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../failover/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Failover with Jedis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jedis-maven/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jedis maven
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redisearch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RediSearch Jedis Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redisjson/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RedisJSON Jedis Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-following-methods-now-return-primitive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      The following methods now return primitive values:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>3to4 primitives</h1>
+
+<h2 id="the-following-methods-now-return-primitive-values">The following methods now return primitive values:</h2>
+<p>&gt;&gt; <code>long</code>/<code>boolean</code>/<code>double</code> instead of <code>Long</code>/<code>Boolean</code>/<code>Double</code>:</p>
+<ul>
+<li>dbSize()</li>
+<li>lastsave()</li>
+<li>slowlogLen()</li>
+<li>clientId()</li>
+<li>clientUnblock(long clientId, UnblockType unblockType)</li>
+<li>clientKill(ClientKillParams params)</li>
+<li>aclDelUser(String name)</li>
+<li>aclDelUser(byte[] name)</li>
+<li>move(String key, int dbIndex)</li>
+<li>move(byte[] key, int dbIndex)</li>
+<li>waitReplicas(int replicas, long timeout)</li>
+<li>waitReplicas(String key, int replicas, long timeout)</li>
+<li>exists(String key)</li>
+<li>exists(byte[] key)</li>
+<li>exists(String... keys)</li>
+<li>exists(byte[]... keys)</li>
+<li>persist(String key)</li>
+<li>expire(String key, long seconds)</li>
+<li>expire(byte[] key, long seconds)</li>
+<li>pexpire(String key, long milliseconds)</li>
+<li>pexpire(byte[] key, long milliseconds)</li>
+<li>expireAt(String key, long unixTime)</li>
+<li>expireAt(byte[] key, long unixTime)</li>
+<li>pexpireAt(String key, long millisecondsTimestamp)</li>
+<li>pexpireAt(byte[] key, long millisecondsTimestamp)</li>
+<li>ttl(String key)</li>
+<li>ttl(byte[] key)</li>
+<li>pttl(String key)</li>
+<li>touch(String key)</li>
+<li>touch(byte[] key)</li>
+<li>touch(String... keys)</li>
+<li>touch(byte[]... keys)</li>
+<li>setbit(String key, long offset, boolean value)</li>
+<li>setbit(byte[] key, long offset, boolean value)</li>
+<li>getbit(String key, long offset)</li>
+<li>getbit(byte[] key, long offset)</li>
+<li>setrange(String key, long offset, String value)</li>
+<li>setrange(byte[] key, long offset, byte[] value)</li>
+<li>setnx(String key, String value)</li>
+<li>setnx(byte[] key, byte[] value)</li>
+<li>incr(String key)</li>
+<li>incr(byte[] key)</li>
+<li>decr(String key)</li>
+<li>decr(byte[] key)</li>
+<li>incrBy(String key, long increment)</li>
+<li>incrBy(byte[] key, long increment)</li>
+<li>decrBy(String key, long decrement)</li>
+<li>decrBy(byte[] key, long decrement)</li>
+<li>incrByFloat(String key, double increment)</li>
+<li>incrByFloat(byte[] key, double increment)</li>
+<li>append(String key, String value)</li>
+<li>append(byte[] key, byte[] value)</li>
+<li>hset(String key, String field, String value)</li>
+<li>hset(byte[] key, byte[] field, byte[] value)</li>
+<li>hset(String key, Map<String, String> hash)</li>
+<li>hset(byte[] key, Map<byte[], byte[]> hash)</li>
+<li>hsetnx(String key, String field, String value)</li>
+<li>hsetnx(byte[] key, byte[] field, byte[] value)</li>
+<li>hincrBy(String key, String field, long value)</li>
+<li>hincrBy(byte[] key, byte[] field, long value)</li>
+<li>hincrByFloat(String key, String field, double value)</li>
+<li>hincrByFloat(byte[] key, byte[] field, double value)</li>
+<li>hexists(String key, String field)</li>
+<li>hexists(byte[] key, byte[] field)</li>
+<li>hdel(String key, String... field)</li>
+<li>hdel(byte[] key, byte[]... field)</li>
+<li>hlen(String key)</li>
+<li>hlen(byte[] key)</li>
+<li>rpush(String key, String... string)</li>
+<li>rpush(byte[] key, byte[]... args)</li>
+<li>lpush(String key, String... string)</li>
+<li>lpush(byte[] key, byte[]... args)</li>
+<li>llen(String key)</li>
+<li>llen(byte[] key)</li>
+<li>lrem(String key, long count, String value)</li>
+<li>lrem(byte[] key, long count, byte[] value)</li>
+<li>sadd(String key, String... member)</li>
+<li>sadd(byte[] key, byte[]... member)</li>
+<li>scard(String key)</li>
+<li>scard(byte[] key)</li>
+<li>sismember(String key, String member)</li>
+<li>sismember(byte[] key, byte[] member)</li>
+<li>strlen(String key)</li>
+<li>strlen(byte[] key)</li>
+<li>zadd(String key, double score, String member)</li>
+<li>zadd(byte[] key, double score, byte[] member)</li>
+<li>zadd(String key, double score, String member, ZAddParams params)</li>
+<li>zadd(byte[] key, double score, byte[] member, ZAddParams params)</li>
+<li>zadd(String key, Map<String, Double> scoreMembers)</li>
+<li>zadd(byte[] key, Map<byte[], Double> scoreMembers)</li>
+<li>zadd(String key, Map<String, Double> scoreMembers, ZAddParams params)</li>
+<li>zadd(byte[] key, Map<byte[], Double> scoreMembers, ZAddParams params)</li>
+<li>zrem(String key, String... members)</li>
+<li>zrem(byte[] key, byte[]... members)</li>
+<li>zincrby(String key, double increment, String member)</li>
+<li>zincrby(byte[] key, double increment, byte[] member)</li>
+<li>zcard(String key)</li>
+<li>zcard(byte[] key)</li>
+<li>zcount(String key, double min, double max)</li>
+<li>zcount(byte[] key, double min, double max)</li>
+<li>zcount(String key, String min, String max)</li>
+<li>zcount(byte[] key, byte[] min, byte[] max)</li>
+<li>zremrangeByRank(String key, long start, long stop)</li>
+<li>zremrangeByRank(byte[] key, long start, long stop)</li>
+<li>zremrangeByScore(String key, double min, double max)</li>
+<li>zremrangeByScore(byte[] key, double min, double max)</li>
+<li>zremrangeByScore(String key, String min, String max)</li>
+<li>zremrangeByScore(byte[] key, byte[] min, byte[] max)</li>
+<li>zlexcount(String key, String min, String max)</li>
+<li>zlexcount(byte[] key, byte[] min, byte[] max)</li>
+<li>zremrangeByLex(String key, String min, String max)</li>
+<li>zremrangeByLex(byte[] key, byte[] min, byte[] max)</li>
+<li>linsert(String key, ListPosition where, String pivot, String value)</li>
+<li>linsert(byte[] key, ListPosition where, byte[] pivot, byte[] value)</li>
+<li>lpushx(String key, String... string)</li>
+<li>lpushx(byte[] key, byte[]... arg)</li>
+<li>rpushx(String key, String... string)</li>
+<li>rpushx(byte[] key, byte[]... arg)</li>
+<li>del(String key)</li>
+<li>del(byte[] key)</li>
+<li>del(String... keys)</li>
+<li>unlink(String key)</li>
+<li>unlink(byte[] key)</li>
+<li>unlink(String... keys)</li>
+<li>bitcount(String key)</li>
+<li>bitcount(byte[] key)</li>
+<li>bitcount(String key, long start, long end)</li>
+<li>bitcount(byte[] key, long start, long end)</li>
+<li>bitpos(String key, boolean value)</li>
+<li>bitpos(String key, boolean value, BitPosParams params)</li>
+<li>pfadd(String key, String... elements)</li>
+<li>pfadd(byte[] key, byte[]... elements)</li>
+<li>pfcount(byte[]... keys)</li>
+<li>geoadd(String key, double longitude, double latitude, String member)</li>
+<li>geoadd(byte[] key, double longitude, double latitude, byte[] member)</li>
+<li>geoadd(String key, Map<String, GeoCoordinate> memberCoordinateMap)</li>
+<li>geoadd(byte[] key, Map<byte[], GeoCoordinate> memberCoordinateMap)</li>
+<li>geoadd(String key, GeoAddParams params, Map<String, GeoCoordinate> memberCoordinateMap)</li>
+<li>geoadd(byte[] key, GeoAddParams params, Map<byte[], GeoCoordinate> memberCoordinateMap)</li>
+<li>hstrlen(String key, String field)</li>
+<li>hstrlen(byte[] key, byte[] field)</li>
+<li>xlen(String key)</li>
+<li>xlen(byte[] key)</li>
+<li>xack(String key, String group, StreamEntryID... ids)</li>
+<li>xack(byte[] key, byte[] group, byte[]... ids)</li>
+<li>xgroupDestroy(String key, String groupname)</li>
+<li>xgroupDestroy(byte[] key, byte[] consumer)</li>
+<li>xgroupDelConsumer( String key, String groupname, String consumername)</li>
+<li>xgroupDelConsumer(byte[] key, byte[] consumer, byte[] consumerName)</li>
+<li>xdel(String key, StreamEntryID... ids)</li>
+<li>xdel(byte[] key, byte[]... ids)</li>
+<li>xtrim(String key, long maxLen, boolean approximate)</li>
+<li>xtrim(byte[] key, long maxLen, boolean approximateLength)</li>
+<li>xtrim(String key, XTrimParams params)</li>
+<li>xtrim(byte[] key, XTrimParams params)</li>
+<li>clusterKeySlot(String key)</li>
+<li>clusterCountKeysInSlot(int slot)</li>
+<li>msetnx(String... keysvalues)</li>
+<li>msetnx(byte[]... keysvalues)</li>
+<li>renamenx(String oldkey, String newkey)</li>
+<li>renamenx(byte[] oldkey, byte[] newkey)</li>
+<li>sdiffstore(String dstkey, String... keys)</li>
+<li>sdiffstore(byte[] dstkey, byte[]... keys)</li>
+<li>sinterstore(String dstkey, String... keys)</li>
+<li>sinterstore(byte[] dstkey, byte[]... keys)</li>
+<li>smove(String srckey, String dstkey, String member)</li>
+<li>smove(byte[] srckey, byte[] dstkey, byte[] member)</li>
+<li>sort(String key, String dstkey)</li>
+<li>sort(byte[] key, byte[] dstkey)</li>
+<li>sort(String key, SortingParams sortingParameters, String dstkey)</li>
+<li>sort(byte[] key, SortingParams sortingParameters, byte[] dstkey)</li>
+<li>sunionstore(String dstkey, String... keys)</li>
+<li>sunionstore(byte[] dstkey, byte[]... keys)</li>
+<li>zdiffStore(String dstkey, String... keys)</li>
+<li>zdiffStore(byte[] dstkey, byte[]... keys)</li>
+<li>zinterstore(String dstkey, String... sets)</li>
+<li>zinterstore(byte[] dstkey, byte[]... sets)</li>
+<li>zinterstore(String dstkey, ZParams params, String... sets)</li>
+<li>zinterstore(byte[] dstkey, ZParams params, byte[]... sets)</li>
+<li>zunionstore(String dstkey, String... sets)</li>
+<li>zunionstore(byte[] dstkey, byte[]... sets)</li>
+<li>zunionstore(String dstkey, ZParams params, String... sets)</li>
+<li>zunionstore(byte[] dstkey, ZParams params, byte[]... sets)</li>
+<li>bitop(BitOP op, String destKey, String... srcKeys)</li>
+<li>bitop(BitOP op, byte[] destKey, byte[]... srcKeys)</li>
+<li>georadiusStore(String key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam param, GeoRadiusStoreParam storeParam)</li>
+<li>georadiusStore(byte[] key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam param, GeoRadiusStoreParam storeParam)</li>
+<li>georadiusByMemberStore(String key, String member, double radius, GeoUnit unit, GeoRadiusParam param, GeoRadiusStoreParam storeParam)</li>
+<li>georadiusByMemberStore(byte[] key, byte[] member, double radius, GeoUnit unit, GeoRadiusParam param, GeoRadiusStoreParam storeParam)</li>
+<li>copy(String srcKey, String dstKey, int db, boolean replace)</li>
+<li>copy(byte[] srcKey, byte[] dstKey, int db, boolean replace)</li>
+<li>copy(String srcKey, String dstKey, boolean replace)</li>
+<li>copy(byte[] srcKey, byte[] dstKey, boolean replace)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>
